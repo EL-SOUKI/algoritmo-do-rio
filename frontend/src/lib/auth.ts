@@ -58,7 +58,7 @@ export async function loginUser(
   if (!response.ok) {
     throw new Error(
       json?.message ??
-        "Email ou senha inválidos.",
+        "Invalid email or password.",
     );
   }
 
@@ -86,7 +86,7 @@ export async function getMe(
   if (!response.ok) {
     throw new Error(
       json?.message ??
-        "Sessão inválida.",
+        "Invalid session.",
     );
   }
 

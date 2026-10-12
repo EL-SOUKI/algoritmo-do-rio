@@ -91,13 +91,13 @@ function shortAddress(value: string) {
 
 function materialLabel(material: string) {
   const labels: Record<string, string> = {
-    PET_PLASTIC: "Plástico PET",
-    OTHER_PLASTIC: "Outros plásticos",
-    ALUMINUM: "Alumínio",
-    GLASS: "Vidro",
-    PAPER: "Papel",
-    CARDBOARD: "Papelão",
-    ELECTRONICS: "Eletrônicos",
+    PET_PLASTIC: "PET Plastic",
+    OTHER_PLASTIC: "Other Plastics",
+    ALUMINUM: "Aluminum",
+    GLASS: "Glass",
+    PAPER: "Paper",
+    CARDBOARD: "Cardboard",
+    ELECTRONICS: "Electronics",
   };
 
   return labels[material] ?? material;
@@ -221,7 +221,7 @@ function App() {
           !campaignsResponse.ok
         ) {
           throw new Error(
-            "Não foi possível carregar os dados da API.",
+            "Could not load data from the API.",
           );
         }
 
@@ -257,7 +257,7 @@ function App() {
         setError(
           err instanceof Error
             ? err.message
-            : "Erro inesperado.",
+            : "Unexpected error.",
         );
       } finally {
         setLoading(false);
@@ -342,14 +342,14 @@ function App() {
 
     if (!selectedPoint) {
       setFormError(
-        "Selecione um ponto de coleta.",
+        "Select a collection point.",
       );
       return;
     }
 
     if (!selectedCampaign) {
       setFormError(
-        "Nenhuma campanha ativa disponível.",
+        "No active campaign is available.",
       );
       return;
     }
@@ -359,7 +359,7 @@ function App() {
       weight <= 0
     ) {
       setFormError(
-        "Informe um peso válido.",
+        "Enter a valid weight.",
       );
       return;
     }
@@ -399,7 +399,7 @@ function App() {
         throw new Error(
           json?.message ??
             json?.error ??
-            `Erro HTTP ${response.status}`,
+            `HTTP error ${response.status}`,
         );
       }
 
@@ -409,7 +409,7 @@ function App() {
       setFormError(
         err instanceof Error
           ? err.message
-          : "Erro ao registrar reciclagem.",
+          : "Failed to register recycling.",
       );
     } finally {
       setSubmitting(false);
@@ -428,7 +428,7 @@ function App() {
     return (
       <main className="state-page">
         <div className="loader" />
-        <p>Carregando sessão...</p>
+        <p>Loading session...</p>
       </main>
     );
   }
@@ -462,7 +462,7 @@ function App() {
               </strong>
 
               <span>
-                DePIN / ReFi Amazônia
+                DePIN / ReFi Amazon
               </span>
             </div>
           </div>
@@ -471,7 +471,7 @@ function App() {
             <button
               className="nav-item active"
             >
-              Empresa
+              Company
             </button>
           </nav>
 
@@ -488,7 +488,7 @@ function App() {
               className="logout-button"
               onClick={logout}
             >
-              Sair
+              Sign out
             </button>
           </div>
         </aside>
@@ -520,7 +520,7 @@ function App() {
               </strong>
 
               <span>
-                DePIN / ReFi Amazônia
+                DePIN / ReFi Amazon
               </span>
             </div>
           </div>
@@ -529,7 +529,7 @@ function App() {
             <button
               className="nav-item active"
             >
-              Operador
+              Operator
             </button>
           </nav>
 
@@ -546,7 +546,7 @@ function App() {
               className="logout-button"
               onClick={logout}
             >
-              Sair
+              Sign out
             </button>
           </div>
         </aside>
@@ -564,7 +564,7 @@ function App() {
     return (
       <main className="state-page">
         <div className="loader" />
-        <p>Carregando...</p>
+        <p>Loading...</p>
       </main>
     );
   }
@@ -572,7 +572,7 @@ function App() {
   if (error || !impact) {
     return (
       <main className="state-page">
-        <h1>Erro ao carregar</h1>
+        <h1>Failed to load</h1>
         <p>{error}</p>
       </main>
     );
@@ -591,7 +591,7 @@ function App() {
               Algoritmo do Rio
             </strong>
             <span>
-              DePIN / ReFi Amazônia
+              DePIN / ReFi Amazon
             </span>
           </div>
         </div>
@@ -620,7 +620,7 @@ function App() {
               setView("recycle")
             }
           >
-            Reciclar
+            Recycle
           </button>
 
 
@@ -637,7 +637,7 @@ function App() {
               setView("history")
             }
           >
-            Histórico
+            History
           </button>
 
           <button
@@ -658,7 +658,7 @@ function App() {
           className="logout-button"
           onClick={logout}
         >
-          Sair
+          Sign out
         </button>
 
         <div className="network-card">
@@ -679,16 +679,16 @@ function App() {
             <header className="topbar">
               <div>
                 <p className="eyebrow">
-                  IMPACTO AMBIENTAL
+                  ENVIRONMENTAL IMPACT
                 </p>
 
                 <h1>
-                  Olá, {impact.recycler.name}
+                  Hello, {impact.recycler.name}
                 </h1>
 
                 <p className="subtitle">
-                  Seu impacto registrado
-                  e auditável na Solana.
+                  Your impact is recorded
+                  and auditable on Solana.
                 </p>
               </div>
 
@@ -706,7 +706,7 @@ function App() {
             <section className="stats-grid">
               <article className="stat-card featured">
                 <span className="stat-label">
-                  Total reciclado
+                  Total recycled
                 </span>
 
                 <strong className="stat-value">
@@ -715,14 +715,14 @@ function App() {
                 </strong>
 
                 <p>
-                  Material validado por
-                  pontos de coleta.
+                  Material verified by
+                  collection points.
                 </p>
               </article>
 
               <article className="stat-card">
                 <span className="stat-label">
-                  Saldo REC
+                  REC balance
                 </span>
 
                 <strong className="stat-value">
@@ -734,14 +734,14 @@ function App() {
                 </strong>
 
                 <p>
-                  Tokens ambientais na sua
+                  Environmental tokens in your
                   wallet.
                 </p>
               </article>
 
               <article className="stat-card">
                 <span className="stat-label">
-                  REC emitidos
+                  REC issued
                 </span>
 
                 <strong className="stat-value">
@@ -752,14 +752,14 @@ function App() {
                 </strong>
 
                 <p>
-                  Recompensas geradas por
-                  reciclagem.
+                  Rewards generated through
+                  recycling.
                 </p>
               </article>
 
               <article className="stat-card">
                 <span className="stat-label">
-                  Registros on-chain
+                  On-chain records
                 </span>
 
                 <strong className="stat-value">
@@ -770,7 +770,7 @@ function App() {
                 </strong>
 
                 <p>
-                  Provas verificáveis na
+                  Verifiable proofs on
                   Solana.
                 </p>
               </article>
@@ -781,14 +781,14 @@ function App() {
         {view === "recycle" && (
           <section className="page-section">
             <p className="eyebrow">
-              NOVO DESCARTE
+              NEW RECYCLING EVENT
             </p>
 
-            <h1>Registrar reciclagem</h1>
+            <h1>Register recycling</h1>
 
             <p className="subtitle">
-              Registre o material entregue
-              em um ponto de coleta.
+              Register the material delivered
+              at a collection point.
             </p>
 
             <div className="recycle-layout">
@@ -799,7 +799,7 @@ function App() {
                 }
               >
                 <label>
-                  Ponto de coleta
+                  Collection point
 
                   <select
                     value={selectedPoint}
@@ -833,37 +833,37 @@ function App() {
                     }
                   >
                     <option value="PET_PLASTIC">
-                      Plástico PET
+                      PET Plastic
                     </option>
 
                     <option value="OTHER_PLASTIC">
-                      Outros plásticos
+                      Other Plastics
                     </option>
 
                     <option value="ALUMINUM">
-                      Alumínio
+                      Aluminum
                     </option>
 
                     <option value="GLASS">
-                      Vidro
+                      Glass
                     </option>
 
                     <option value="PAPER">
-                      Papel
+                      Paper
                     </option>
 
                     <option value="CARDBOARD">
-                      Papelão
+                      Cardboard
                     </option>
 
                     <option value="ELECTRONICS">
-                      Eletrônicos
+                      Electronics
                     </option>
                   </select>
                 </label>
 
                 <label>
-                  Campanha
+                  Campaign
 
                   <select
                     value={
@@ -878,8 +878,8 @@ function App() {
                     {availableCampaigns.length ===
                     0 ? (
                       <option value="">
-                        Nenhuma campanha
-                        disponível
+                        No campaign
+                        available
                       </option>
                     ) : (
                       availableCampaigns.map(
@@ -903,14 +903,14 @@ function App() {
                 </label>
 
                 <label>
-                  Peso em kg
+                  Weight in kg
 
                   <input
                     type="number"
                     min="0.001"
                     max="500"
                     step="0.001"
-                    placeholder="Ex.: 2.4"
+                    placeholder="e.g. 2.4"
                     value={weightKg}
                     onChange={(event) =>
                       setWeightKg(
@@ -922,7 +922,7 @@ function App() {
 
                 <div className="reward-preview">
                   <span>
-                    Recompensa estimada
+                    Estimated reward
                   </span>
 
                   <strong>
@@ -945,37 +945,37 @@ function App() {
                   }
                 >
                   {submitting
-                    ? "Registrando..."
-                    : "Registrar descarte"}
+                    ? "Registering..."
+                    : "Register recycling event"}
                 </button>
               </form>
 
               <aside className="panel process-card">
                 <p className="eyebrow">
-                  COMO FUNCIONA
+                  HOW IT WORKS
                 </p>
 
                 <h2>
-                  Da coleta à blockchain
+                  From collection to blockchain
                 </h2>
 
                 <ol>
                   <li>
-                    Você registra o descarte.
+                    You register the recycling event.
                   </li>
                   <li>
-                    O ponto de coleta valida
-                    peso e material.
+                    The collection point verifies
+                    weight and material.
                   </li>
                   <li>
-                    O operador aprova a prova.
+                    The operator approves the proof.
                   </li>
                   <li>
-                    O protocolo registra na
+                    The protocol records it on
                     Solana.
                   </li>
                   <li>
-                    REC é enviado para sua
+                    REC is sent to your
                     wallet.
                   </li>
                 </ol>
@@ -986,7 +986,7 @@ function App() {
               <div className="success-card">
                 <div>
                   <p className="eyebrow">
-                    DESCARTE REGISTRADO
+                    RECYCLING EVENT REGISTERED
                   </p>
 
                   <h2>
@@ -994,9 +994,9 @@ function App() {
                   </h2>
 
                   <p>
-                    O evento foi criado e está
-                    aguardando validação do
-                    operador.
+                    The event was created and is
+                    awaiting validation by the
+                    operator.
                   </p>
                 </div>
 
@@ -1024,7 +1024,7 @@ function App() {
               PROOF OF RECYCLING
             </p>
 
-            <h1>Histórico</h1>
+            <h1>History</h1>
 
             <div className="panel history-panel">
               <div className="history-list">
@@ -1053,7 +1053,7 @@ function App() {
                       </div>
 
                       <div className="history-metric">
-                        <span>Peso</span>
+                        <span>Weight</span>
                         <strong>
                           {event.weightGrams /
                             1000}{" "}
@@ -1069,7 +1069,7 @@ function App() {
                       </div>
 
                       <div className="history-metric">
-                        <span>Ponto</span>
+                        <span>Collection point</span>
                         <strong>
                           {
                             event.collectionPoint
@@ -1101,7 +1101,7 @@ function App() {
               SOLANA
             </p>
 
-            <h1>Sua wallet</h1>
+            <h1>Your wallet</h1>
 
             <div className="blockchain-grid">
               <article className="panel">
@@ -1110,7 +1110,7 @@ function App() {
                 </p>
 
                 <h2>
-                  Endereço público
+                  Public address
                 </h2>
 
                 <code className="address">
@@ -1123,7 +1123,7 @@ function App() {
 
               <article className="panel">
                 <p className="eyebrow">
-                  SALDO
+                  BALANCE
                 </p>
 
                 <h2>

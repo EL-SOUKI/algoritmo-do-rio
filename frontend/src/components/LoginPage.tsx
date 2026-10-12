@@ -61,7 +61,7 @@ export default function LoginPage({
       setError(
         err instanceof Error
           ? err.message
-          : "Erro ao entrar.",
+          : "Failed to sign in.",
       );
     } finally {
       setLoading(false);
@@ -82,21 +82,21 @@ export default function LoginPage({
             </strong>
 
             <span>
-              DePIN / ReFi Amazônia
+              DePIN / ReFi Amazon
             </span>
           </div>
         </div>
 
         <div className="login-heading">
           <p className="eyebrow">
-            ACESSO AO PROTOCOLO
+            PROTOCOL ACCESS
           </p>
 
-          <h1>Entrar</h1>
+          <h1>Sign in</h1>
 
           <p>
-            Acesse seu impacto e suas
-            operações registradas na
+            Access your impact and
+            operations recorded on
             Solana.
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function LoginPage({
           </label>
 
           <label>
-            Senha
+            Password
 
             <input
               type="password"
@@ -133,7 +133,7 @@ export default function LoginPage({
                   event.target.value,
                 )
               }
-              placeholder="Sua senha"
+              placeholder="Your password"
             />
           </label>
 
@@ -149,8 +149,8 @@ export default function LoginPage({
             type="submit"
           >
             {loading
-              ? "Entrando..."
-              : "Entrar"}
+              ? "Signing in..."
+              : "Sign in"}
           </button>
         </form>
       </section>

@@ -1,30 +1,51 @@
-# Milestone 1 — REC SPL token
+# REC Token Milestone — Historical Design Note
 
-The public product direction is **O Algoritmo do Rio**, while the repository may remain named `recychain-backend` during the hackathon.
+This document records the design decisions that led to the current REC implementation.
 
-## Physical → digital invariant
+## Physical-to-digital invariant
 
-A REC mint can happen only as the terminal action of a valid `verify_recycling` instruction:
+REC issuance follows this flow:
 
 ```text
 physical delivery
-  -> authorized verifier
-  -> unique proof_hash
-  -> campaign rule checked on-chain
+  -> authorized verification
+  -> unique proof hash
+  -> campaign rules checked on-chain
   -> RecyclingProof PDA
   -> REC mint
 ```
 
-The client never submits an arbitrary reward amount. It submits verified weight/material plus the proof hash. The Solana program reads `reward_rec_per_kg` from the campaign account and computes the mint amount itself.
+The client does not choose an arbitrary reward amount. The Anchor program reads the campaign reward rate and calculates REC from the verified weight.
 
-## Why mint authority is a PDA
+## Program-controlled mint
 
-The REC mint is the PDA `["rec-mint"]` and is also its own mint authority. Only the Proof of Recycling program can produce the PDA signature required by the Token Program CPI. This removes a hot-wallet mint-authority key from the reward path.
+The REC mint is the PDA:
 
-## Double-mint protection
+```text
+["rec-mint"]
+```
 
-The proof account is initialized at `["proof", proof_hash]`. A second transaction using the same proof hash fails because the PDA is already initialized.
+The mint PDA is its own mint authority. The Proof of Recycling program signs the SPL Token CPI using PDA seeds.
 
-## Deliberately deferred
+This prevents a client or normal wallet from arbitrarily minting REC outside the protocol flow.
 
-This milestone does not yet implement retirement/burn semantics. REC issuance represents **verified impact available for later retirement**. The next milestone adds `ImpactPool`, followed by `burn_for_certificate` and `ImpactCertificate`.
+## Duplicate-proof protection
+
+Each accepted recycling proof is stored at:
+
+```text
+["proof", proof_hash]
+```
+
+The account uses Anchor `init`, so the same proof hash cannot be accepted twice.
+
+## Current status
+
+The later milestones originally planned after REC issuance are now implemented:
+
+- ImpactPool
+- REC retirement
+- `burn_for_certificate`
+- ImpactCertificate PDA
+
+See the root README and Anchor program for the current architecture.

@@ -5,9 +5,6 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
-[programs.devnet]
-proof_of_recycling = "Fg6PaFpoGXkYsidMpWxTWqkZcTqgK5h3JUsV5Vvx3v7x"
-
 [programs.localnet]
 proof_of_recycling = "9bQFX3gtGKwN6he7bkRWRFXQRLdBk1YE4YcHYEzcgoaG"
 

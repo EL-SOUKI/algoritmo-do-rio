@@ -1,90 +1,74 @@
-# O Algoritmo do Rio — Solana program
+# O Algoritmo do Rio — Solana Program
 
-Milestone 1 adds a real SPL reward asset (`REC`) to the existing Proof of Recycling model.
+Anchor program for verifiable recycling impact and REC retirement.
 
-## What is implemented
+## Implemented instructions
 
 - `initialize_protocol`
-  - creates the protocol config PDA;
-  - creates the REC mint PDA;
-  - makes the REC mint PDA its own mint authority (program-controlled minting).
 - `register_collection_point`
 - `set_collection_point_active`
 - `create_campaign`
 - `set_campaign_active`
+- `initialize_impact_pool`
 - `verify_recycling`
-  - validates the authorized physical verifier;
-  - validates point/campaign/material/time window;
-  - creates a unique `RecyclingProof` PDA from `proof_hash`;
-  - updates a recycler `RewardLedger` PDA;
-  - calculates REC on-chain from weight + campaign rate;
-  - creates the recycler's associated token account if needed;
-  - mints REC via CPI to the SPL Token Program.
+- `burn_for_certificate`
 
-## REC monetary/impact semantics for the MVP
-
-REC is an impact/reward unit, not a promise of fiat value.
-
-The mint uses `0` decimals. Campaigns define an integer `reward_rec_per_kg`.
-For the demo campaign:
+## Core accounts and PDAs
 
 ```text
-10 REC / kg of verified PET
-2.4 kg PET -> 24 REC
-100 g PET -> 1 REC
+ProtocolConfig     ["protocol"]
+REC Mint           ["rec-mint"]
+CollectionPoint    ["point", point_id_32]
+Campaign           ["campaign", campaign_id_32]
+ImpactPool         ["impact-pool", campaign]
+RecyclingProof     ["proof", proof_hash_32]
+RewardLedger       ["rewards", recycler_pubkey]
+ImpactCertificate  ["certificate", campaign, certificate_id]
 ```
 
-The program—not the frontend—calculates the amount minted.
+## REC issuance
 
-## PDA map
+The program validates:
 
-```text
-ProtocolConfig   ["protocol"]
-REC Mint         ["rec-mint"]
-CollectionPoint  ["point", point_id_32]
-Campaign         ["campaign", campaign_id_32]
-RecyclingProof   ["proof", proof_hash_32]
-RewardLedger     ["rewards", recycler_pubkey]
-```
+- authorized verifier
+- active collection point
+- active campaign
+- material compatibility
+- campaign time window
+- verified weight
 
-`RecyclingProof` uses `init`, so a previously accepted `proof_hash` cannot be minted twice.
+The REC reward is calculated on-chain and minted through the SPL Token Program.
 
-## First local build
+The REC mint is program-controlled through a PDA.
 
-Install Solana/Agave + Anchor first. This milestone targets Anchor 1.2.x, then:
+## Burn-to-Certificate
+
+A company can permanently burn REC through `burn_for_certificate`.
+
+The program:
+
+1. validates the company's REC token account;
+2. burns REC through the SPL Token Program;
+3. updates ImpactPool retirement accounting;
+4. creates an immutable ImpactCertificate PDA.
+
+## Build
+
+This hackathon MVP currently targets Solana localnet.
 
 ```bash
 cd solana
-anchor keys sync
-anchor build
-anchor test
+anchor build --arch v2
 ```
 
-`Anchor.toml` and `declare_id!` intentionally contain a development placeholder program ID. `anchor keys sync` replaces it with the generated keypair's address.
+Current localnet program ID:
 
-## Devnet deployment
-
-```bash
-solana config set --url devnet
-solana airdrop 2
-cd solana
-anchor keys sync
-anchor build
-anchor deploy --provider.cluster devnet
+```text
+9bQFX3gtGKwN6he7bkRWRFXQRLdBk1YE4YcHYEzcgoaG
 ```
 
-After deployment, copy the program ID into the backend `.env`:
+Devnet/mainnet deployment is a post-hackathon production milestone.
 
-```env
-SOLANA_PROGRAM_ID=<DEPLOYED_PROGRAM_ID>
-```
+## Trust model
 
-## Security model in this milestone
-
-Blockchain does not independently know whether plastic existed. An authorized collection-point verifier attests the physical event. The program makes that attestation unique/auditable and enforces the reward rule before minting REC.
-
-REC mint authority is not a normal wallet. The mint PDA controls issuance, and the program signs the `mint_to` CPI with PDA seeds. This prevents a client or sponsor from minting arbitrary REC outside `verify_recycling`.
-
-## Next milestone
-
-`ImpactPool` will track verified versus retired environmental impact. Then `burn_for_certificate` will permanently burn REC and create an on-chain impact certificate.
+Solana guarantees digital uniqueness, accounting and retirement. Physical waste is validated by an authorized collection-point operator before the protocol submits the attestation on-chain.

@@ -29,13 +29,13 @@ type PendingEvent = {
 
 function materialLabel(material: string) {
   const labels: Record<string, string> = {
-    PET_PLASTIC: "Plástico PET",
-    OTHER_PLASTIC: "Outros plásticos",
-    ALUMINUM: "Alumínio",
-    GLASS: "Vidro",
-    PAPER: "Papel",
-    CARDBOARD: "Papelão",
-    ELECTRONICS: "Eletrônicos",
+    PET_PLASTIC: "PET Plastic",
+    OTHER_PLASTIC: "Other Plastics",
+    ALUMINUM: "Aluminum",
+    GLASS: "Glass",
+    PAPER: "Paper",
+    CARDBOARD: "Cardboard",
+    ELECTRONICS: "Electronics",
   };
 
   return labels[material] ?? material;
@@ -83,7 +83,7 @@ export default function OperatorPanel({
       if (!response.ok) {
         throw new Error(
           json?.message ??
-            `Erro HTTP ${response.status}`,
+            `HTTP error ${response.status}`,
         );
       }
 
@@ -92,7 +92,7 @@ export default function OperatorPanel({
       setError(
         err instanceof Error
           ? err.message
-          : "Erro ao carregar eventos.",
+          : "Failed to load events.",
       );
     } finally {
       setLoading(false);
@@ -129,7 +129,7 @@ export default function OperatorPanel({
         throw new Error(
           verifyJson?.message ??
             verifyJson?.error ??
-            `Falha na verificação: HTTP ${verifyResponse.status}`,
+            `Verification failed: HTTP ${verifyResponse.status}`,
         );
       }
 
@@ -151,7 +151,7 @@ export default function OperatorPanel({
         throw new Error(
           blockchainJson?.message ??
             blockchainJson?.error ??
-            `Falha na Solana: HTTP ${blockchainResponse.status}`,
+            `Solana transaction failed: HTTP ${blockchainResponse.status}`,
         );
       }
 
@@ -167,7 +167,7 @@ export default function OperatorPanel({
       setError(
         err instanceof Error
           ? err.message
-          : "Erro ao processar reciclagem.",
+          : "Failed to process recycling.",
       );
     } finally {
       setProcessingId(null);
@@ -177,7 +177,7 @@ export default function OperatorPanel({
   if (loading) {
     return (
       <section className="page-section">
-        <p>Carregando fila do operador...</p>
+        <p>Loading operator queue...</p>
       </section>
     );
   }
@@ -185,25 +185,25 @@ export default function OperatorPanel({
   return (
     <section className="page-section">
       <p className="eyebrow">
-        OPERAÇÃO DO PONTO DE COLETA
+        COLLECTION POINT OPERATIONS
       </p>
 
-      <h1>Validação de reciclagem</h1>
+      <h1>Recycling validation</h1>
 
       <p className="subtitle">
-        Confira peso, material e campanha antes
-        de registrar a prova na Solana.
+        Check weight, material and campaign before
+        recording the proof on Solana.
       </p>
 
       <div className="operator-summary">
         <article className="panel">
-          <span>Eventos pendentes</span>
+          <span>Pending events</span>
           <strong>{events.length}</strong>
         </article>
 
         <article className="panel">
-          <span>Papel do usuário</span>
-          <strong>Operador</strong>
+          <span>User role</span>
+          <strong>Operator</strong>
         </article>
       </div>
 
@@ -211,7 +211,7 @@ export default function OperatorPanel({
         <div className="operator-success">
           <div>
             <p className="eyebrow">
-              REGISTRADO NA SOLANA
+              RECORDED ON SOLANA
             </p>
 
             <strong>
@@ -238,10 +238,10 @@ export default function OperatorPanel({
       <div className="operator-events">
         {events.length === 0 ? (
           <div className="panel empty-queue">
-            <h2>Fila vazia</h2>
+            <h2>Queue empty</h2>
             <p>
-              Não há descartes aguardando
-              validação neste ponto.
+              There are no recycling events awaiting
+              validation at this collection point.
             </p>
           </div>
         ) : (
@@ -270,7 +270,7 @@ export default function OperatorPanel({
                 <div className="operator-event-header">
                   <div>
                     <p className="eyebrow">
-                      AGUARDANDO VALIDAÇÃO
+                      AWAITING VALIDATION
                     </p>
 
                     <h2>{event.publicId}</h2>
@@ -283,7 +283,7 @@ export default function OperatorPanel({
 
                 <div className="operator-details">
                   <div>
-                    <span>Reciclador</span>
+                    <span>Recycler</span>
                     <strong>
                       {event.recycler.name}
                     </strong>
@@ -299,21 +299,21 @@ export default function OperatorPanel({
                   </div>
 
                   <div>
-                    <span>Peso informado</span>
+                    <span>Reported weight</span>
                     <strong>
                       {event.weightGrams / 1000} kg
                     </strong>
                   </div>
 
                   <div>
-                    <span>Recompensa</span>
+                    <span>Reward</span>
                     <strong className="rec-value">
                       {estimatedRec} REC
                     </strong>
                   </div>
 
                   <div>
-                    <span>Ponto</span>
+                    <span>Collection point</span>
                     <strong>
                       {
                         event.collectionPoint
@@ -323,7 +323,7 @@ export default function OperatorPanel({
                   </div>
 
                   <div>
-                    <span>Campanha</span>
+                    <span>Campaign</span>
                     <strong>
                       {event.campaign?.name ??
                         "—"}
@@ -332,10 +332,10 @@ export default function OperatorPanel({
                 </div>
 
                 <div className="operator-warning">
-                  Confirme fisicamente o peso e
-                  o material antes de aprovar.
-                  Após o registro on-chain, a
-                  prova não poderá ser duplicada.
+                  Physically confirm the weight and
+                  material before approving.
+                  After the on-chain record, the
+                  proof cannot be duplicated.
                 </div>
 
                 <button
@@ -348,8 +348,8 @@ export default function OperatorPanel({
                   }
                 >
                   {processingId === event.id
-                    ? "Registrando na Solana..."
-                    : `Aprovar e emitir ${estimatedRec} REC`}
+                    ? "Recording on Solana..."
+                    : `Approve and issue ${estimatedRec} REC`}
                 </button>
               </article>
             );

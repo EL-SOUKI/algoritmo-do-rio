@@ -82,6 +82,8 @@ Burning is irreversible, creating a transparent link between physical recycling,
 
 ## Run locally
 
+Prerequisites: Node.js 22+, Docker, Solana CLI and Anchor 1.2.x.
+
 Backend:
 
     cp .env.example .env
@@ -97,10 +99,34 @@ Frontend:
     npm install
     npm run dev
 
-Anchor:
+Solana build:
 
     cd solana
     anchor build --arch v2
+
+The backend reads the generated IDL from `solana/target/idl/proof_of_recycling.json`.
+
+### Fresh localnet deployment
+
+Deployment keypairs, generated Anchor artifacts and validator ledgers are intentionally not committed. A fresh clone therefore generates its own local program keypair.
+
+To deploy a fresh local instance:
+
+    cd solana
+    anchor build --arch v2
+    anchor keys sync
+    anchor build --arch v2
+    solana-test-validator
+
+Then, in another terminal:
+
+    cd solana
+    anchor deploy --provider.cluster localnet
+    anchor keys list
+
+Set `SOLANA_PROGRAM_ID` in the root `.env` to the program ID reported by Anchor. Keep `BLOCKCHAIN_MODE=localnet` and `SOLANA_RPC_URL=http://127.0.0.1:8899`.
+
+The Program ID shown elsewhere in this README is the preserved hackathon localnet deployment used for the recorded demo.
 
 API: `http://localhost:3333/api/v1`
 Frontend: `http://localhost:5173`

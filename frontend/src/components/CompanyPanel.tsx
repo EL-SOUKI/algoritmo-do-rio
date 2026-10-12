@@ -140,7 +140,7 @@ export default function CompanyPanel({
         !impactResponse.ok
       ) {
         throw new Error(
-          "Não foi possível carregar o dashboard corporativo.",
+          "Could not load the company dashboard.",
         );
       }
 
@@ -183,7 +183,7 @@ export default function CompanyPanel({
       setError(
         err instanceof Error
           ? err.message
-          : "Erro inesperado.",
+          : "Unexpected error.",
       );
     } finally {
       setLoading(false);
@@ -233,21 +233,21 @@ export default function CompanyPanel({
       amount <= 0
     ) {
       setError(
-        "Informe uma quantidade inteira de REC.",
+        "Enter a whole number of REC.",
       );
       return;
     }
 
     if (amount > currentBalance) {
       setError(
-        "Saldo REC insuficiente.",
+        "Insufficient REC balance.",
       );
       return;
     }
 
     if (!campaignId) {
       setError(
-        "Selecione uma campanha.",
+        "Select a campaign.",
       );
       return;
     }
@@ -279,7 +279,7 @@ export default function CompanyPanel({
         throw new Error(
           json?.message ??
             json?.error ??
-            `Erro HTTP ${response.status}`,
+            `HTTP error ${response.status}`,
         );
       }
 
@@ -294,7 +294,7 @@ export default function CompanyPanel({
       setError(
         err instanceof Error
           ? err.message
-          : "Falha ao emitir certificado.",
+          : "Failed to issue certificate.",
       );
     } finally {
       setBurning(false);
@@ -305,7 +305,7 @@ export default function CompanyPanel({
     return (
       <section className="page-section">
         <p>
-          Carregando dashboard corporativo...
+          Loading company dashboard...
         </p>
       </section>
     );
@@ -317,18 +317,18 @@ export default function CompanyPanel({
         BURN-TO-CERTIFICATE
       </p>
 
-      <h1>Impacto corporativo</h1>
+      <h1>Corporate impact</h1>
 
       <p className="subtitle">
-        Aposente REC permanentemente e
-        transforme o impacto ambiental em
-        certificados verificáveis na Solana.
+        Permanently retire REC and
+        turn environmental impact into
+        verifiable certificates on Solana.
       </p>
 
       <div className="company-stats">
         <article className="stat-card featured">
           <span className="stat-label">
-            Saldo REC
+            REC balance
           </span>
 
           <strong className="stat-value">
@@ -337,13 +337,13 @@ export default function CompanyPanel({
           </strong>
 
           <p>
-            Disponível para aposentadoria.
+            Available for retirement.
           </p>
         </article>
 
         <article className="stat-card">
           <span className="stat-label">
-            REC queimados
+            REC burned
           </span>
 
           <strong className="stat-value">
@@ -351,14 +351,14 @@ export default function CompanyPanel({
           </strong>
 
           <p>
-            Removidos permanentemente de
-            circulação.
+            Permanently removed from
+            circulation.
           </p>
         </article>
 
         <article className="stat-card">
           <span className="stat-label">
-            Impacto aposentado
+            Retired impact
           </span>
 
           <strong className="stat-value">
@@ -369,13 +369,13 @@ export default function CompanyPanel({
           </strong>
 
           <p>
-            Material vinculado a certificados.
+            Material linked to certificates.
           </p>
         </article>
 
         <article className="stat-card">
           <span className="stat-label">
-            Certificados
+            Certificates
           </span>
 
           <strong className="stat-value">
@@ -383,7 +383,7 @@ export default function CompanyPanel({
           </strong>
 
           <p>
-            Registros corporativos on-chain.
+            Corporate on-chain records.
           </p>
         </article>
       </div>
@@ -391,20 +391,20 @@ export default function CompanyPanel({
       <div className="company-layout">
         <article className="panel burn-card">
           <p className="eyebrow">
-            APOSENTAR IMPACTO
+            RETIRE IMPACT
           </p>
 
           <h2>
-            Emitir novo certificado
+            Issue new certificate
           </h2>
 
           <p className="company-description">
-            O REC queimado não poderá voltar
-            à circulação.
+            Burned REC cannot return
+            to circulation.
           </p>
 
           <label>
-            Campanha
+            Campaign
 
             <select
               value={campaignId}
@@ -431,7 +431,7 @@ export default function CompanyPanel({
           </label>
 
           <label>
-            Quantidade de REC
+            REC amount
 
             <input
               type="number"
@@ -439,7 +439,7 @@ export default function CompanyPanel({
               step="1"
               max={currentBalance}
               value={recAmount}
-              placeholder="Ex.: 5"
+              placeholder="e.g. 5"
               onChange={(event) =>
                 setRecAmount(
                   event.target.value,
@@ -449,8 +449,8 @@ export default function CompanyPanel({
           </label>
 
           <div className="burn-warning">
-            Esta operação é irreversível.
-            Os REC serão queimados na
+            This operation is irreversible.
+            REC will be burned on the
             blockchain.
           </div>
 
@@ -468,18 +468,18 @@ export default function CompanyPanel({
             }
           >
             {burning
-              ? "Emitindo certificado..."
+              ? "Issuing certificate..."
               : "Burn-to-Certificate"}
           </button>
         </article>
 
         <article className="panel corporate-wallet">
           <p className="eyebrow">
-            WALLET CORPORATIVA
+            COMPANY WALLET
           </p>
 
           <h2>
-            {summary?.company.name ?? "Empresa"}
+            {summary?.company.name ?? "Company"}
           </h2>
 
           <span className="company-label">
@@ -491,7 +491,7 @@ export default function CompanyPanel({
           </code>
 
           <span className="company-label">
-            Rede
+            Network
           </span>
 
           <strong>
@@ -499,7 +499,7 @@ export default function CompanyPanel({
           </strong>
 
           <span className="company-label">
-            REC disponíveis
+            REC available
           </span>
 
           <strong className="company-rec">
@@ -512,21 +512,21 @@ export default function CompanyPanel({
         <div className="certificate-success">
           <div>
             <p className="eyebrow">
-              CERTIFICADO EMITIDO
+              CERTIFICATE ISSUED
             </p>
 
             <h2>
-              Impacto aposentado com sucesso
+              Impact retired successfully
             </h2>
 
             <p>
               {success.recBurned} REC
-              queimados ·{" "}
+              burned ·{" "}
               {(
                 success.retiredWeightGrams /
                 1000
               ).toFixed(3)}{" "}
-              kg aposentados
+              kg retired
             </p>
           </div>
 
@@ -540,18 +540,18 @@ export default function CompanyPanel({
         <div className="certificate-title">
           <div>
             <p className="eyebrow">
-              PROVA DE IMPACTO
+              PROOF OF IMPACT
             </p>
 
             <h2>
-              Certificados emitidos
+              Issued certificates
             </h2>
           </div>
         </div>
 
         {certificates.length === 0 ? (
           <div className="panel">
-            Nenhum certificado emitido.
+            No certificates issued.
           </div>
         ) : (
           <div className="certificate-list">
@@ -564,7 +564,7 @@ export default function CompanyPanel({
                   <div className="certificate-card-header">
                     <div>
                       <span className="certificate-status">
-                        CERTIFICADO ON-CHAIN
+                        ON-CHAIN CERTIFICATE
                       </span>
 
                       <h3>
@@ -586,7 +586,7 @@ export default function CompanyPanel({
                   <div className="certificate-metrics">
                     <div>
                       <span>
-                        Impacto aposentado
+                        Retired impact
                       </span>
 
                       <strong>
@@ -627,7 +627,7 @@ export default function CompanyPanel({
 
                     <div>
                       <span>
-                        Transação
+                        Transaction
                       </span>
 
                       <code>
@@ -643,7 +643,7 @@ export default function CompanyPanel({
                     {new Date(
                       certificate.createdOnchainAt,
                     ).toLocaleString(
-                      "pt-BR",
+                      "en-US",
                     )}
                   </small>
                 </article>

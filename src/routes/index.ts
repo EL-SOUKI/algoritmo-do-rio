@@ -120,38 +120,94 @@ apiRouter.post(
   certificatesController.burn,
 );
 
-apiRouter.post("/users", usersController.create);
-apiRouter.get("/users/:id", usersController.getById);
+apiRouter.post(
+  "/users",
+  requireAuth,
+  requireRole("ADMIN"),
+  usersController.create,
+);
+apiRouter.get(
+  "/users/:id",
+  requireAuth,
+  requireRole("ADMIN"),
+  usersController.getById,
+);
 
-apiRouter.post("/collection-points", collectionPointsController.create);
+apiRouter.post(
+  "/collection-points",
+  requireAuth,
+  requireRole("ADMIN"),
+  collectionPointsController.create,
+);
 apiRouter.get("/collection-points", collectionPointsController.list);
 apiRouter.post(
   "/collection-points/:id/operators",
+  requireAuth,
+  requireRole("ADMIN"),
   collectionPointsController.assignOperator,
 );
 apiRouter.get("/collection-points/nearby", collectionPointsController.nearby);
 apiRouter.get("/collection-points/:id", collectionPointsController.getById);
 
 
-apiRouter.post("/campaigns", campaignsController.create);
+apiRouter.post(
+  "/campaigns",
+  requireAuth,
+  requireRole("ADMIN"),
+  campaignsController.create,
+);
 apiRouter.get("/campaigns", campaignsController.list);
 apiRouter.get("/campaigns/:id", campaignsController.getById);
 
-apiRouter.post("/recycling-events", recyclingController.create);
-apiRouter.get("/recycling-events/:id", recyclingController.getById);
-apiRouter.get("/recyclers/:recyclerId/events", recyclingController.listByRecycler);
+apiRouter.post(
+  "/recycling-events",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.create,
+);
+apiRouter.get(
+  "/recycling-events/:id",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.getById,
+);
+apiRouter.get(
+  "/recyclers/:recyclerId/events",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.listByRecycler,
+);
 
 apiRouter.get(
   "/operators/:operatorId/pending-events",
+  requireAuth,
+  requireRole("ADMIN"),
   recyclingController.listPendingForOperator,
 );
 
 
 apiRouter.get(
   "/recyclers/:recyclerId/impact",
+  requireAuth,
+  requireRole("ADMIN"),
   impactController.getRecyclerImpact,
 );
 
-apiRouter.post("/recycling-events/:id/verify", recyclingController.verify);
-apiRouter.post("/recycling-events/:id/reject", recyclingController.reject);
-apiRouter.post("/recycling-events/:id/record-onchain", recyclingController.recordOnchain);
+apiRouter.post(
+  "/recycling-events/:id/verify",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.verify,
+);
+apiRouter.post(
+  "/recycling-events/:id/reject",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.reject,
+);
+apiRouter.post(
+  "/recycling-events/:id/record-onchain",
+  requireAuth,
+  requireRole("ADMIN"),
+  recyclingController.recordOnchain,
+);

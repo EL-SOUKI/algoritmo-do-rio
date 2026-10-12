@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Backend API for RecyChain — Proof of Recycling on Solana.",
+  "description": "O Algoritmo do Rio — DePIN/ReFi protocol for verifiable recycling impact on Solana.",
   "engines": {
     "node": ">=22.18.0"
   },
@@ -17,10 +17,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "demo:flow": "node scripts/demo-flow.mjs",
-    "solana:build": "cd solana && anchor build",
-    "solana:test": "cd solana && anchor test",
-    "solana:deploy:devnet": "cd solana && anchor deploy --provider.cluster devnet"
+    "solana:build": "cd solana && anchor build --arch v2",
+    "solana:test": "cd solana && anchor test"
   },
   "dependencies": {
     "@anchor-lang/core": "^1.2.0",
