@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -104,10 +105,8 @@ export default function CompanyPanel({
   const [success, setSuccess] =
     useState<Certificate | null>(null);
 
-  async function loadData() {
+  const loadData = useCallback(async () => {
     try {
-      setError(null);
-
       const [
         certificatesResponse,
         campaignsResponse,
@@ -171,12 +170,11 @@ export default function CompanyPanel({
             campaign.active,
         );
 
-      if (
-        !campaignId &&
-        activeCampaigns.length > 0
-      ) {
+      if (activeCampaigns.length > 0) {
         setCampaignId(
-          activeCampaigns[0].id,
+          (current) =>
+            current ||
+            activeCampaigns[0].id,
         );
       }
     } catch (err) {
@@ -188,11 +186,13 @@ export default function CompanyPanel({
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
-    void loadData();
-  }, [token]);
+    queueMicrotask(() => {
+      void loadData();
+    });
+  }, [loadData]);
 
   const totalRecBurned = useMemo(
     () =>

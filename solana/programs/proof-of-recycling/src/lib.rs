@@ -4,7 +4,7 @@ use anchor_spl::{
     token_interface::{self, Burn, Mint, MintTo, TokenAccount, TokenInterface},
 };
 
-// Development placeholder. Run `anchor keys sync` before the first build/deploy.
+// Program ID used by the preserved hackathon localnet deployment.
 declare_id!("9bQFX3gtGKwN6he7bkRWRFXQRLdBk1YE4YcHYEzcgoaG");
 
 const PROTOCOL_SEED: &[u8] = b"protocol";

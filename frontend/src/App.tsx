@@ -184,7 +184,6 @@ function App() {
       !authUser ||
       authUser.role !== "USER"
     ) {
-      setLoading(false);
       return;
     }
 
@@ -267,40 +266,28 @@ function App() {
     void load();
   }, [token, authUser]);
 
+  const [currentTime] = useState(() => Date.now());
+
   const availableCampaigns = useMemo(() => {
-    const now = Date.now();
 
     return campaigns.filter(
       (campaign) =>
         campaign.active &&
         campaign.materialType === material &&
-        new Date(campaign.startsAt).getTime() <= now &&
-        new Date(campaign.endsAt).getTime() >= now,
+        new Date(campaign.startsAt).getTime() <= currentTime &&
+        new Date(campaign.endsAt).getTime() >= currentTime,
     );
-  }, [campaigns, material]);
+  }, [campaigns, material, currentTime]);
 
-  useEffect(() => {
-    const stillAvailable =
-      availableCampaigns.some(
-        (campaign) =>
-          campaign.id === selectedCampaign,
-      );
-
-    if (!stillAvailable) {
-      setSelectedCampaign(
-        availableCampaigns[0]?.id ?? "",
-      );
-    }
-  }, [
-    availableCampaigns,
-    selectedCampaign,
-  ]);
 
   const selectedCampaignData =
     availableCampaigns.find(
       (campaign) =>
         campaign.id === selectedCampaign,
-    );
+    ) ?? availableCampaigns[0];
+
+  const effectiveSelectedCampaign =
+    selectedCampaignData?.id ?? "";
 
   const estimatedRec = useMemo(() => {
     const weight = Number(weightKg);
@@ -347,7 +334,7 @@ function App() {
       return;
     }
 
-    if (!selectedCampaign) {
+    if (!effectiveSelectedCampaign) {
       setFormError(
         "No active campaign is available.",
       );
@@ -381,7 +368,7 @@ function App() {
             collectionPointId:
               selectedPoint,
             campaignId:
-              selectedCampaign,
+              effectiveSelectedCampaign,
             materialType: material,
             weightGrams:
               Math.round(weight * 1000),
@@ -867,7 +854,7 @@ function App() {
 
                   <select
                     value={
-                      selectedCampaign
+                      effectiveSelectedCampaign
                     }
                     onChange={(event) =>
                       setSelectedCampaign(
@@ -941,7 +928,7 @@ function App() {
                   type="submit"
                   disabled={
                     submitting ||
-                    !selectedCampaign
+                    !effectiveSelectedCampaign
                   }
                 >
                   {submitting

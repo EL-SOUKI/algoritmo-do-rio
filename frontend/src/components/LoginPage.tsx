@@ -117,7 +117,7 @@ export default function LoginPage({
                   event.target.value,
                 )
               }
-              placeholder="seu@email.com"
+              placeholder="you@example.com"
             />
           </label>
 

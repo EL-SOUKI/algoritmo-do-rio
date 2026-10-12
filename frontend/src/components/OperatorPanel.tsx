@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const API_URL =
   import.meta.env.VITE_API_URL ??
@@ -64,10 +64,8 @@ export default function OperatorPanel({
       signature: string;
     } | null>(null);
 
-  async function loadPending() {
+  const loadPending = useCallback(async () => {
     try {
-      setError(null);
-
       const response = await fetch(
         `${API_URL}/operator/pending-events`,
         {
@@ -97,11 +95,13 @@ export default function OperatorPanel({
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
-    void loadPending();
-  }, [token]);
+    queueMicrotask(() => {
+      void loadPending();
+    });
+  }, [loadPending]);
 
   async function approveEvent(
     event: PendingEvent,
