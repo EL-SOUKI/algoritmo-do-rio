@@ -117,6 +117,12 @@ Potential revenue includes Burn-to-Certificate fees, enterprise integrations, tr
 
 The project aligns with **SDG 1, 8, 12 and 14**.
 
+## Team
+
+- **Henzo El Souki** — Full-stack / Solana
+- **Elton Pantoja** — Project contributor
+- **Abel Ferreira** — Project contributor
+
 ## Status
 
 **Functional end-to-end MVP completed on Solana localnet.**
