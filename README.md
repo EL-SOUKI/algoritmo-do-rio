@@ -1,152 +1,128 @@
-# RecyChain Backend
+# O Algoritmo do Rio
 
-Backend API for the RecyChain hackathon MVP: physical recycling → operator verification → Proof of Recycling → blockchain record → reward points.
+**DePIN / ReFi on Solana for verifiable recycling impact.**
 
-## Current scope
+O Algoritmo do Rio connects recyclers, collection-point operators and companies in one auditable flow:
 
-Implemented:
+**physical recycling → operator verification → Proof of Recycling → REC mint → company retirement → on-chain certificate**
 
-- User creation and lookup
-- Collection-point creation and nearby search
-- Recycling-event creation
-- Authorized operator verification/rejection
-- Deterministic SHA-256 Proof of Recycling hash
-- Material-based reward calculation
-- Blockchain gateway abstraction
-- Explicit local `mock` blockchain adapter
-- PostgreSQL + Prisma data model
-- Demo seed data
+> Functional hackathon MVP running end-to-end on Solana localnet.
 
-Not implemented yet:
+## Problem
 
-- Authentication/session management
-- Anchor program
-- Real Solana devnet transaction submission
-- Token/points minting on Solana
-- Sponsor campaigns
-- Anti-fraud scoring
+Recycling and environmental-credit systems often rely on fragmented centralized records. Physical actions are hard to audit, and environmental claims can be difficult to verify or retire transparently.
 
-## Requirements
+The protocol does not claim that blockchain verifies physical waste by itself. Authorized operators validate the real-world event; Solana provides traceability, non-duplication, token accounting and permanent retirement.
 
-- Node.js 22.18+
-- Docker / Docker Compose
-- npm 11 recommended for the current Prisma toolchain
+## How it works
+
+1. A recycler registers recyclable material at a collection point.
+2. An authorized operator validates material and weight.
+3. The backend generates a deterministic SHA-256 Proof of Recycling.
+4. The Anchor program records the proof and updates campaign impact state.
+5. REC SPL tokens are minted to the recycler.
+6. REC can be transferred to a company.
+7. The company burns REC.
+8. The program retires the corresponding impact and creates a certificate PDA.
+
+## Working MVP
+
+Implemented and demonstrated:
+
+- JWT authentication with USER, OPERATOR, COMPANY and ADMIN roles
+- Recycler, operator and company dashboards
+- Collection points and campaigns
+- Anchor smart contract and real localnet transactions
+- Program-controlled REC SPL mint
+- ImpactPool accounting
+- Recycler-to-company REC transfer
+- Burn-to-Certificate and certificate PDAs
+- PostgreSQL + Prisma
+- React + TypeScript frontend
+
+Demo flow:
+
+**2 kg PET → 20 REC minted → 20 REC transferred to Company Demo → 15 REC burned → 1.5 kg impact retired → 2 on-chain certificates**
+
+## Solana architecture
+
+Anchor program: `solana/programs/proof-of-recycling/`
+
+Program ID: `9bQFX3gtGKwN6he7bkRWRFXQRLdBk1YE4YcHYEzcgoaG`
+
+Main PDAs:
+
+- Protocol: `["protocol"]`
+- REC Mint: `["rec-mint"]`
+- Collection Point: `["point", sha256(collectionPointId)]`
+- Campaign: `["campaign", sha256(campaignId)]`
+- ImpactPool: `["impact-pool", campaign]`
+- Proof: `["proof", proofHash]`
+- Rewards: `["rewards", recycler]`
+- Certificate: `["certificate", campaign, certificateId]`
+
+The proof-hash PDA prevents the same verified recycling event from being recorded twice.
+
+## REC and Burn-to-Certificate
+
+For the current PET demo campaign, the reward rate is **10 REC/kg**.
+
+Companies permanently retire REC through the smart contract:
+
+**REC burn → ImpactPool retirement → Certificate PDA**
+
+Burning is irreversible, creating a transparent link between physical recycling, REC issuance, REC ownership and environmental retirement.
+
+## Tech stack
+
+**Blockchain:** Solana, Rust, Anchor, SPL Token, PDAs
+**Backend:** Node.js, TypeScript, Express, Prisma, PostgreSQL, Zod, JOSE/JWT, bcrypt
+**Frontend:** React, TypeScript, Vite
+**Infrastructure:** Docker, Docker Compose, Solana local validator
 
 ## Run locally
 
-```bash
-cp .env.example .env
-docker compose up -d
-npm install
-npm run prisma:generate
-npm run db:migrate -- --name init
-npm run db:seed
-npm run dev
-```
+Backend:
 
-In another terminal, exercise the complete local MVP flow:
+    cp .env.example .env
+    docker compose up -d
+    npm install
+    npm run prisma:generate
+    npm run db:deploy
+    npm run dev
 
-```bash
-npm run demo:flow
-```
+Frontend:
 
-API base URL:
+    cd frontend
+    npm install
+    npm run dev
 
-```text
-http://localhost:3333/api/v1
-```
+Anchor:
 
-Health check:
+    cd solana
+    anchor build --arch v2
 
-```bash
-curl http://localhost:3333/api/v1/health
-```
+API: `http://localhost:3333/api/v1`
+Frontend: `http://localhost:5173`
 
-## Main workflow
+## Security
 
-1. Create or use a recycler.
-2. Choose a collection point.
-3. Create a recycling event.
-4. An operator assigned to that point verifies it.
-5. The backend generates a proof hash and reward amount.
-6. Call `record-onchain`.
-7. In `BLOCKCHAIN_MODE=mock`, a clearly-marked fake signature is returned for local UI development.
-8. In the next milestone the adapter will submit the Proof of Recycling to the Solana devnet Anchor program.
+Private keys, seed phrases, demo wallet keypairs, `.env`, local validator ledger and generated deployment artifacts are excluded from Git.
 
-## API
+The local demo uses server-assisted company signing only for the demo localnet wallet. Production should use client-side or secure embedded-wallet/account-abstraction signing.
 
-### POST /users
+## Business model and impact
 
-```json
-{
-  "name": "Ana",
-  "email": "ana@example.com"
-}
-```
+Potential revenue includes Burn-to-Certificate fees, enterprise integrations, traceability/reporting services and REC marketplace fees. The initial model proposes an approximately **2.5% protocol fee** around certificate retirement.
 
-### GET /collection-points/nearby?lat=-1.4558&lng=-48.4902&radiusKm=20
+The project aligns with **SDG 1, 8, 12 and 14**.
 
-### POST /recycling-events
+## Status
 
-```json
-{
-  "recyclerId": "UUID",
-  "collectionPointId": "UUID",
-  "materialType": "PET_PLASTIC",
-  "weightGrams": 2400
-}
-```
+**Functional end-to-end MVP completed on Solana localnet.**
 
-### POST /recycling-events/:id/verify
-
-```json
-{
-  "operatorId": "UUID"
-}
-```
-
-### POST /recycling-events/:id/record-onchain
-
-No request body is required.
-
-## Proof payload
-
-The proof hash commits to the fields that matter for the verified event:
-
-- event ID
-- public recycling ID
-- recycler
-- collection point
-- operator
-- material
-- weight
-- reward
-- verification timestamp
-
-The current hash is SHA-256 over a canonicalized JSON representation. The Anchor program will use the resulting 32-byte digest as the on-chain proof identifier.
-
-## Security notes
-
-The current milestone has no production authentication. Never expose operator/admin routes publicly in this state. Authorization is currently modeled at the domain layer through operator-to-collection-point assignments; HTTP authentication will be added before deployment.
-
-Never commit private keys or seed phrases. The real Solana adapter will use a dedicated devnet authority/key-management mechanism.
+Next milestones: devnet/mainnet deployment, client-side wallet signing, decentralized cooperative validation, stronger physical anti-fraud mechanisms and enterprise reporting integrations.
 
 ---
 
-## Hackathon protocol upgrade: O Algoritmo do Rio / REC (Milestone 1)
-
-The repository now includes an Anchor program under `solana/` implementing the first protocol upgrade from the pitch deck: verified physical recycling can mint a program-controlled SPL reward asset named **REC**.
-
-Key properties:
-
-- REC can only be minted through `verify_recycling`.
-- The REC mint is a PDA and its own mint authority; no client wallet owns arbitrary mint power.
-- The program calculates rewards from verified weight and the campaign's on-chain `reward_rec_per_kg` rule.
-- `RecyclingProof = ["proof", proof_hash]` makes the same verified proof non-repeatable.
-- `RewardLedger` tracks cumulative verified weight and REC issuance per recycler.
-
-For the demo PET campaign, `10 REC/kg` means `2.4 kg -> 24 REC`.
-
-See [`solana/README.md`](solana/README.md) and [`docs/rec-token-milestone.md`](docs/rec-token-milestone.md).
-
-> The existing Node `DevnetBlockchainGateway` remains intentionally unwired in this milestone. Backend-to-Anchor submission is scheduled after the on-chain ImpactPool + burn/certificate primitives, so the protocol surface is stable before client integration.
+**O Algoritmo do Rio — From physical recycling to verifiable environmental impact on Solana.**
