@@ -1,0 +1,36 @@
+node_modules
+.env
+dist
+.DS_Store
+coverage
+src/generated/prisma
+*.log
+
+# Solana / Anchor
+solana/target/
+solana/.anchor/
+solana/test-ledger/
+solana/node_modules/
+solana/.yarn/
+.demo-wallets/
+
+# Local secrets / environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Demo wallets / private keys
+.demo-wallets/
+
+# Local backups
+*.bak
+
+# Frontend build/cache
+frontend/dist/
+frontend/.vite/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp

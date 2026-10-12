@@ -1,0 +1,51 @@
+{
+  "name": "recychain-backend",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend API for RecyChain — Proof of Recycling on Solana.",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prisma:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "demo:flow": "node scripts/demo-flow.mjs",
+    "solana:build": "cd solana && anchor build",
+    "solana:test": "cd solana && anchor test",
+    "solana:deploy:devnet": "cd solana && anchor deploy --provider.cluster devnet"
+  },
+  "dependencies": {
+    "@anchor-lang/core": "^1.2.0",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4",
+    "bcryptjs": "^3.0.3",
+    "bn.js": "^5.2.5",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jose": "^6.2.12",
+    "pg": "^8.16.3",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/bn.js": "^5.2.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.0",
+    "@types/pg": "^8.15.5",
+    "prisma": "^7.10.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
