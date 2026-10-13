@@ -1,6 +1,6 @@
-# O Algoritmo do Rio — Frontend
+# River Algorithm — Frontend
 
-React + TypeScript + Vite interface for the O Algoritmo do Rio hackathon MVP.
+React + TypeScript + Vite interface for the River Algorithm hackathon MVP.
 
 The frontend provides dedicated experiences for:
 

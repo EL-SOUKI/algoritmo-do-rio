@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "O Algoritmo do Rio — DePIN/ReFi protocol for verifiable recycling impact on Solana.",
+  "description": "River Algorithm — DePIN/ReFi protocol for verifiable recycling impact on Solana.",
   "engines": {
     "node": ">=22.18.0"
   },

@@ -440,12 +440,12 @@ function App() {
         <aside className="sidebar">
           <div className="brand">
             <div className="brand-mark">
-              AR
+              RA
             </div>
 
             <div>
               <strong>
-                Algoritmo do Rio
+                River Algorithm
               </strong>
 
               <span>
@@ -498,12 +498,12 @@ function App() {
         <aside className="sidebar">
           <div className="brand">
             <div className="brand-mark">
-              AR
+              RA
             </div>
 
             <div>
               <strong>
-                Algoritmo do Rio
+                River Algorithm
               </strong>
 
               <span>
@@ -570,12 +570,12 @@ function App() {
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-mark">
-            AR
+            RA
           </div>
 
           <div>
             <strong>
-              Algoritmo do Rio
+              River Algorithm
             </strong>
             <span>
               DePIN / ReFi Amazon

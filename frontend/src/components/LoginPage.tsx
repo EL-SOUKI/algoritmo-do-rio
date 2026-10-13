@@ -73,12 +73,12 @@ export default function LoginPage({
       <section className="login-card">
         <div className="login-brand">
           <div className="brand-mark">
-            AR
+            RA
           </div>
 
           <div>
             <strong>
-              Algoritmo do Rio
+              River Algorithm
             </strong>
 
             <span>

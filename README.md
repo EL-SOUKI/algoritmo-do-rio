@@ -1,8 +1,8 @@
-# O Algoritmo do Rio
+# River Algorithm
 
 **DePIN / ReFi on Solana for verifiable recycling impact.**
 
-O Algoritmo do Rio connects recyclers, collection-point operators and companies in one auditable flow:
+River Algorithm connects recyclers, collection-point operators and companies in one auditable flow:
 
 **physical recycling → operator verification → Proof of Recycling → REC mint → company retirement → on-chain certificate**
 
@@ -157,4 +157,4 @@ Next milestones: devnet/mainnet deployment, client-side wallet signing, decentra
 
 ---
 
-**O Algoritmo do Rio — From physical recycling to verifiable environmental impact on Solana.**
+**River Algorithm — From physical recycling to verifiable environmental impact on Solana.**

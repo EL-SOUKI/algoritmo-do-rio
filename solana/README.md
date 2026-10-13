@@ -1,4 +1,4 @@
-# O Algoritmo do Rio — Solana Program
+# River Algorithm — Solana Program
 
 Anchor program for verifiable recycling impact and REC retirement.
 

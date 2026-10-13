@@ -1,4 +1,4 @@
-# O Algoritmo do Rio — MVP Architecture
+# River Algorithm — MVP Architecture
 
 ```text
 React Web App
