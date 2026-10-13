@@ -146,8 +146,6 @@ The project aligns with **SDG 1, 8, 12 and 14**.
 ## Team
 
 - **Gabriel El Souki** — Full-stack / Solana
-- **Tom Pantoja** — Project contributor
-- **Abel Henrique Ferreira** — Project contributor
 
 ## Status
 
